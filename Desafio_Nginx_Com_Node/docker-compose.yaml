@@ -3,8 +3,6 @@ version: '3'
 services: 
   nginx:
     container_name: nginx-app-node
-    build: 
-      context: ./nginx
     image: fabiocoliveira/nginx-app-node:latest
     tty: true
     networks: 
@@ -15,8 +13,6 @@ services:
       - app
   app:
     container_name: app-node
-    build: 
-      context: ./node
     image: fabiocoliveira/app-node:latest    
     entrypoint: dockerize -wait tcp://db:3306 -timeout 3000s -wait-retry-interval 5s npm run prod        
     tty: true            
@@ -26,8 +22,6 @@ services:
       - db
   db:
     container_name: db
-    build: 
-      context: ./mysql
     image: fabiocoliveira/mysql-app-node    
     restart: always
     tty: true
