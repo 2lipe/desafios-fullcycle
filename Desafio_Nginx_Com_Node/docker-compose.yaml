@@ -4,7 +4,8 @@ services:
   nginx:
     container_name: nginx-app-node
     image: fabiocoliveira/nginx-app-node:latest
-    entrypoint: dockerize -wait tcp://app:3000 -timeout 3000s -wait-retry-interval 5s nginx -g "daemon off;"
+    entrypoint: dockerize -wait tcp://app:3000 -timeout 3000s -wait-retry-interval 5s ./docker-entrypoint.sh
+    command: nginx "-g" "daemon off;"
     tty: true
     networks: 
       - node-network        
@@ -15,7 +16,8 @@ services:
   app:
     container_name: app-node
     image: fabiocoliveira/app-node:latest    
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 3000s -wait-retry-interval 5s npm run prod        
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 3000s -wait-retry-interval 5s docker-entrypoint.sh        
+    command: npm run prod
     tty: true            
     networks:
       - node-network
